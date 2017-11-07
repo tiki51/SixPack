@@ -5,7 +5,7 @@ class Cluster
         @config =config
         spin_up_nodes
     end
-    
+
     def spin_up_nodes
        puts "Brewing up a #{@config['node_count']} pack..."
        ec2 = Aws::EC2::Resource.new
@@ -16,7 +16,7 @@ class Cluster
            min_count: 1,
            max_count: @config['node_count'],
            iam_instance_profile: {
-                arn: 'arn:aws:iam::708253402773:instance-profile/SSM'
+                arn: @config['ssm_profile']
                 }
            }
        instances = ec2.create_instances(params)
@@ -24,7 +24,7 @@ class Cluster
            Node.new(ec2, ins.id, @config)
        end
     end
-    
+
     def assign_tests(tests = nil)
         @tests ||= tests
         @nodes.each do |node|
@@ -32,16 +32,16 @@ class Cluster
             @tests.pop if test_started
         end
     end
-    
+
     def nodes_destroyed?
         #binding.pry
         @nodes.reject! {|node| node.destroyed?}
         @nodes == []
     end
-    
+
     def monitor_nodes
         assign_tests until @tests.empty?
         @nodes.each {|node| node.destroy} until nodes_destroyed?
     end
-    
+
 end

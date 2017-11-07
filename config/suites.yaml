@@ -3,3 +3,4 @@ test_suite:
     node_count: 6
     ami: ami-1a64d260
     root: /home/ubuntu/headless_demo
+    ssm_profile: arn:aws:iam::708253402773:instance-profile/SSM

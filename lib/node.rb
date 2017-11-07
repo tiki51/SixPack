@@ -34,7 +34,6 @@ class Node
     end
     
     def destroy
-        #binding.pry
         if status == 'Success' or status == 'Failed' or status == 'READY'
             terminate
             @destroyed = true

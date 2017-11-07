@@ -1,0 +1,5 @@
+test_suite:
+    key: foo
+    node_count: 6
+    ami: ami-1a64d260
+    root: /home/ubuntu/headless_demo

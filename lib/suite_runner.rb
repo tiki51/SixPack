@@ -10,8 +10,8 @@ class SuiteRunner
   end
 
   def run_suite
-    cluster = Cluster.new(@config)
-    cluster.assign_tests(@tests)
+    cluster = Cluster.new(@config, @tests)
+    cluster.assign_tests
     cluster.monitor_nodes
   end
 

@@ -1,8 +1,9 @@
 require 'aws-sdk'
 
 class Cluster
-  def initialize(config)
-    @config =config
+  def initialize(config, tests)
+    @config = config
+    @tests = tests
     spin_up_nodes
   end
 
@@ -25,22 +26,15 @@ class Cluster
     end
   end
 
-  def assign_tests(tests = nil)
-    @tests ||= tests
+  def assign_tests
     @nodes.each do |node|
-      test_started = node.run_test(@tests[-1]) if (node.status == 'READY') and !@tests.empty?
-      @tests.pop if test_started
+      node.run_test(@tests.pop) if !@tests.empty? and node.ready_for_assignment?
     end
-  end
-
-  def nodes_destroyed?
-    @nodes.reject! {|node| node.destroyed?}
-    @nodes == []
   end
 
   def monitor_nodes
     assign_tests until @tests.empty?
-    @nodes.each {|node| node.destroy} until nodes_destroyed?
+    @nodes.reject! {|node| node.destroy} until @nodes.empty?
   end
 
 end

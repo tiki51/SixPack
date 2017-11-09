@@ -1,91 +1,39 @@
 class Node
   attr_reader :id
 
-  def initialize(client, id, config)
-    @client = client
+  def initialize(resource, id, config)
+    @resource = resource
     @id = id
     @config = config
-    @command = nil
-    @destroyed = false
+    @test = nil
   end
-
-  def status
-    state = instance.state.code
-    if state == 16
-      test_status
-    else
-      state
-    end
+  
+  def ready_for_assignment?
+    node_up? and (!@test or @test.complete?)
   end
-
+  
+  def node_up?
+    state == 16 and @resource.client.describe_instance_status({instance_ids: [@id]}).instance_statuses[0].instance_status.details[0].status == 'passed'
+  end
+  
+  def state
+    instance.state.code
+  end
+  
   def instance
-    @client.instance(id)
+    @resource.instance(id)
   end
 
   def run_test(test_id)
-    return false if @client.client.describe_instance_status({instance_ids: [@id]}).instance_statuses[0].instance_status.details[0].status != 'passed'
-    @command = SSMCommand.new(@id, ["cd #{@config['root']}", " bundle exec cucumber -t #{test_id}"])
-  end
-
-  def test_status
-    return "IN PROGRESS" if @command and @command.status != "Success" and @command.status != "Failed"
-    puts @command.output if @command
-    "READY"
+    @test = Test.new(test_id, SSMCommand.new(@id, ["cd #{@config['root']}", " bundle exec cucumber -t #{test_id}"])) 
   end
 
   def destroy
-    if status == 'Success' or status == 'Failed' or status == 'READY'
-      terminate
-      @destroyed = true
+    if ready_for_assignment?
+      instance.terminate
+      true
+    else
+      false
     end
   end
-
-  def terminate
-    instance.terminate
-  end
-
-  def destroyed?
-    @destroyed
-  end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

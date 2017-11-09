@@ -16,7 +16,7 @@ class Cluster
            min_count: 1,
            max_count: @config['node_count'],
            iam_instance_profile: {
-                arn: 'arn:aws:iam::708253402773:instance-profile/SSM'
+                arn: @config['ssm_profile']
                 }
            }
        instances = ec2.create_instances(params)

@@ -1,5 +1,7 @@
 test_suite:
     key: foo
-    node_count: 6
+    node_count: 1
     ami: ami-1a64d260
     root: /home/ubuntu/headless_demo
+    ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
+    

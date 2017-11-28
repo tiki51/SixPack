@@ -1,6 +1,18 @@
 test_suite:
     key: foo
-    node_count: 1
+    node_count: 4
     ami: ami-1a64d260
     root: /home/ubuntu/headless_demo
     ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
+    script: AWS-RunShellScript
+    instance_type: t2.micro
+
+ie_suite:
+    key: foo
+    node_count: 2
+    ami: ami-c5de4cbf
+    root: 'C:\devl\oz\oz\EXAMPLE'
+    ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
+    script: 'AWS-RunPowerShellScript'
+    instance_type: t2.small
+    command_options: '-p example'

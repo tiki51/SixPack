@@ -1,4 +1,4 @@
-
+require_relative 'node.rb'
 require_relative 'cluster.rb'
 require_relative 'suite_runner.rb'
 require_relative 'ssm_command.rb'

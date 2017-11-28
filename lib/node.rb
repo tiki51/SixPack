@@ -14,7 +14,6 @@ class Node
   
   def node_up?
     status0 = @resource.client.describe_instance_status({instance_ids: [@id]}).instance_statuses[0]
-    #binding.pry if state == 16
     state == 16 and status0 and status0.instance_status.details[0].status == 'passed'
   end
   

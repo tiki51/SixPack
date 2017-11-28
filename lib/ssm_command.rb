@@ -22,7 +22,6 @@ class SSMCommand
     begin
       @client.get_command_invocation({instance_id: @instance_id, command_id: @id})
     rescue => e
-      #binding.pry
       raise e
     end
   end
@@ -32,8 +31,6 @@ class SSMCommand
   end
 
   def output
-    puts 'foo'
-    #binding.pry
     get_invocation.standard_output_content
   end
 

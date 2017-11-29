@@ -1,8 +1,20 @@
 class Test
-  def initialize(id, command)
-    @id = id
-    @command = command
+  def initialize(instance_id, config, test_line)
+    @test_line = test_line
+    @config = config
+    @command = SSMCommand.new(instance_id, format_commands, @config)
     @reported = false
+  end
+  
+  def format_commands
+    [
+      "cd #{@config['root']}",
+      "bundle exec cucumber '#{@test_line}' #{@config['command_options']}"
+    ]
+  end
+  
+  def run
+    @command.send
   end
   
   def complete?

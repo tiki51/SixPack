@@ -1,9 +1,9 @@
 class Node
   attr_reader :id
 
-  def initialize(resource, id, config)
-    @resource = resource
+  def initialize(id, resource, config)
     @id = id
+    @resource = resource
     @config = config
     @test = nil
   end
@@ -25,8 +25,9 @@ class Node
     @resource.instance(id)
   end
 
-  def run_test(test_id)
-    @test = Test.new(test_id, SSMCommand.new(@id, ["cd #{@config['root']}", "bundle exec cucumber -t '#{test_id}' #{@config['command_options']}"], @config)) 
+  def run_test(test_line)
+    @test = Test.new(id, @config, test_line) 
+    @test.run 
   end
 
   def destroy

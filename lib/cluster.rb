@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'cuke_slicer'
 
 class Cluster
   def initialize(config, tests)
@@ -21,8 +22,8 @@ class Cluster
         }
     }
     instances = ec2.create_instances(params)
-    @nodes = instances.map do |ins|
-      Node.new(ec2, ins.id, @config)
+    @nodes = instances.map do |instance|
+      Node.new(instance.id, ec2, @config)
     end
   end
 

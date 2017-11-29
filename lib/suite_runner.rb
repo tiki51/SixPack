@@ -5,8 +5,7 @@ class SuiteRunner
 
   def initialize(suite)
     @config = YAML.load_file('config/suites.yaml')[suite]
-    # @tests will be replaced with a method to scrape the test suite or db or something
-    @tests = ['@test_1', '@test_2', '@test_3', '@test_4', '@test_5', '@test_6', '@test_7', '@test_8', '@test_9','@test_11','@test_12','@test_13','@test_14','@test_15']
+    @tests = get_tests
   end
 
   def run_suite
@@ -18,6 +17,18 @@ class SuiteRunner
       cluster.terminate_all_nodes
       raise e
     end
+  end
+
+  def get_tests
+    file_lines = CukeSlicer::Slicer.new.slice(@config['local_file_source'], get_filters, :file_line)
+    file_lines.map {|file_line| file_line.gsub(@config['local_file_source'], 'features')}    
+  end
+  
+  def get_filters
+    filters = Hash.new
+    criterias = ['excluded_tags', 'included_tags', 'excluded_paths', 'included_paths'] 
+    criterias.each { |criteria| filters[criteria.to_sym] = @config[criteria] if @config[criteria]}
+    filters
   end
 
 end

@@ -1,18 +1,22 @@
-test_suite:
+sample_ubuntu_suite:
     key: foo
     node_count: 4
     ami: ami-1a64d260
+    local_file_source: 
     root: /home/ubuntu/headless_demo
     ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
     script: AWS-RunShellScript
     instance_type: t2.micro
 
-ie_suite:
+sample_windows_suite:
     key: foo
     node_count: 2
     ami: ami-c5de4cbf
+    local_file_source: '/home/tiki51/oz/EXAMPLE/features'
     root: 'C:\devl\oz\oz\EXAMPLE'
     ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
     script: 'AWS-RunPowerShellScript'
     instance_type: t2.small
     command_options: '-p example'
+    excluded_tags:
+      - '@test_5'

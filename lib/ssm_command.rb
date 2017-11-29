@@ -1,19 +1,24 @@
 class SSMCommand
   attr_reader :id
 
-  def initialize(id, commands, config)
-    @instance_id = id
+  def initialize(instance_id, commands, config)
+    @instance_id = instance_id
     @client = Aws::SSM::Client.new
     @config = config
-    @id = @client.send_command(parameters(id, commands)).command.command_id
+    @id = nil
+    @commands = commands
+  end
+  
+  def send
+    @id = @client.send_command(parameters).command.command_id
   end
 
-  def parameters(id, commands)
+  def parameters
     {
-        instance_ids: [id],
+        instance_ids: [@instance_id],
         document_name: "#{@config['script']}",
         parameters: {
-            "commands" => commands
+            "commands" => @commands
         }
     }
   end

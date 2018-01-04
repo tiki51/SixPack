@@ -1,12 +1,15 @@
 sample_ubuntu_suite:
     key: foo
-    node_count: 4
-    ami: ami-1a64d260
-    local_file_source: 
-    root: /home/ubuntu/headless_demo
+    node_count: 19
+    ami: ami-39234243
+    local_file_source: /home/tiki51/oz/EXAMPLE/features
+    root: '/home/ubuntu/oz/EXAMPLE'
     ssm_profile: 'arn:aws:iam::708253402773:instance-profile/SSM'
     script: AWS-RunShellScript
     instance_type: t2.micro
+    command_options: '-p example'
+    excluded_tags:
+      - '@test_5'
 
 sample_windows_suite:
     key: foo

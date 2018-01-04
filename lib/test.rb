@@ -9,7 +9,7 @@ class Test
   def format_commands
     [
       "cd #{@config['root']}",
-      "bundle exec cucumber '#{@test_line}' #{@config['command_options']}"
+      "cucumber '#{@test_line}' #{@config['command_options']}"
     ]
   end
   

@@ -8,8 +8,7 @@ class Test
   
   def format_commands
     [
-      "cd #{@config['root']}",
-      "cucumber '#{@test_line}' #{@config['command_options']}"
+      "cd #{@config['root']}"
     ]
   end
   

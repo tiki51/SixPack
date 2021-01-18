@@ -3,10 +3,14 @@ require 'cuke_slicer'
 
 class Cluster
   def initialize(config, tests)
-    @config = config
     @tests = tests
-    spin_up_nodes
+
+    print_foo()
   end
+
+
+  def print_foo():
+    print('foo')
 
   def spin_up_nodes
     puts "Brewing up a #{@config['node_count']} pack..."
